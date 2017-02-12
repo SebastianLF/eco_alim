@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import TicketsList from './TicketsList'
-import { Container } from 'semantic-ui-react'
+import { connect } from 'react-redux';
+import { Container } from 'semantic-ui-react';
+import TicketsList from './TicketsList';
+import DimmerPage from './Dimmer'
+import { isLoaded } from '../redux/modules/info'
+
 import './App.css';
 
 class App extends Component {
@@ -8,11 +12,17 @@ class App extends Component {
     return (
       <div className="App">
         <Container>
-          {this.props.children}
+          { this.props.children }
         </Container>
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps({ info }) {
+  return {
+    info
+  }
+}
+
+export default connect(mapStateToProps)(App);

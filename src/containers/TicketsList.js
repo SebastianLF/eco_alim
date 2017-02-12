@@ -1,33 +1,19 @@
-import React from 'react'
-import { Table, Header, Segment, Button } from 'semantic-ui-react'
-import { Link } from 'react-router'
-import { connect } from 'react-redux'
-import Ticket from '../Ticket'
+import React from 'react';
+import { Table, Header, Segment, Button } from 'semantic-ui-react';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import uuid from 'uuid';
+var _ = require("lodash");
 
 const TicketsList = React.createClass({
-
-  showDetails (e) {
-    e.preventDefault();
-    alert('ok')
-  },
-
-  displayList () {
-    const list = [].concat(this.props.list);
-    for (let key in list) {
-      list[key]
-    }
-
-    return list;
-  },
 
   render () {
     return (
       <div>
-        <Header as='h2' attached='top'>
-          # Tickets
-        </Header>
-        <Segment attached>
-          <Table singleLine selectable>
+          <Header as='h2' attached='top'>
+            # Tickets
+          </Header>
+          <Table singleLine selectable attached>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Date</Table.HeaderCell>
@@ -37,11 +23,11 @@ const TicketsList = React.createClass({
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              { this.props.list && this.props.list.map(function (ticket) {
+              { this.props.list && this.props.list.map(function (ticket, i) {
                 return (
-                  <Table.Row>
+                  <Table.Row key={ uuid.v1() }>
                     <Table.Cell>{ticket.date}</Table.Cell>
-                    <Table.Cell>{ticket.magasin.adresse}</Table.Cell>
+                    <Table.Cell>{`${ticket.magasin.chaine} - ${ticket.magasin.adresse}`}</Table.Cell>
                     <Table.Cell>{ticket.montant}</Table.Cell>
                     <Table.Cell textAlign='right'>
                       <Link to={{ pathname: `/tickets/${ticket.id}`, params: { details: ticket } }}>
@@ -53,28 +39,35 @@ const TicketsList = React.createClass({
               })}
             </Table.Body>
           </Table>
-        </Segment>
       </div>
     )
   }
 
 });
 
-const getShop = function (shopState, shopId) {
-  return shopState[shopId].adresse;
+const getAdresseMagasin = function (shopState, shopId) {
+  return shopState[shopId];
 }
 
-const getListInOrder = function (globalState) {
+const getNomChaine = function (chaineState, chaineId) {
+  return chaineState[chaineId];
+}
+
+const getTicketsInOrder = function (globalState) {
+
   return globalState.tickets.ordre.map(function (ticketId) {
     const ticket = globalState.tickets.liste[ticketId];
-    const magasin = { magasin: globalState.magasins[ticket.magasin] }
-    return { ...ticket, ...magasin }
+    const magasin = getAdresseMagasin(_.cloneDeep(globalState.magasin), ticket.magasin);
+    magasin.chaine = getNomChaine(globalState.chaine, magasin.chaine);
+    return { ...ticket, ...{ magasin: magasin } };
   })
 }
 
-const mapStateToProps = (state) => ({
-  list: getListInOrder(state)
-});
+const mapStateToProps = (state) => {
+  return {
+    list: getTicketsInOrder(state)
+  }
+}
 
 
 export default connect(mapStateToProps)(TicketsList);
