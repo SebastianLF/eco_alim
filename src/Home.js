@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
-import { Header, Icon, Image } from 'semantic-ui-react'
-import Tickets from './containers/TicketsList'
+import { Header, Button, Segment, Icon, Image } from 'semantic-ui-react'
+import TicketsBox from './containers/TicketsBox'
+
 import './Home.css'
 
 const cx = { margin: '20px' };
@@ -15,7 +16,8 @@ const Home = React.createClass({
             ECO ALIM
           </Header.Content>
         </Header>
-        <Tickets />
+
+        <TicketsBox />
       </div>
     )
   }

@@ -16,6 +16,10 @@ const initialState = {
   }
 }
 
+export function getChaineNom(chaineState, chaineId){
+  return chaineState[chaineId];
+}
+
 export default function magasin(state = initialState, action) {
   return state;
 }

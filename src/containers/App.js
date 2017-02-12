@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
-import TicketsList from './TicketsList';
 import DimmerPage from './Dimmer'
 import { isLoaded } from '../redux/modules/info'
 

@@ -3,6 +3,8 @@ const LOAD_SUCCESS = 'fincas/tickets/LOAD_SUCCESS';
 const LOAD_FAIL = 'fincas/tickets/LOAD_FAIL';
 const DISPLAY_LIST = 'fincas/tickets/DISPLAY_LIST';
 const UPDATE_SELECTED = 'fincas/tickets/UPDATE_SELECTED';
+const ADD_SUCCESS = 'fincas/tickets/ADD_SUCCESS';
+const ADD_FAIL = 'fincas/tickets/ADD_FAIL';
 
 const initialState = {
     'ordre': [1, 2, 3],
@@ -20,16 +22,14 @@ const initialState = {
 
 export default function tickets(state = initialState, action) {
   switch (action.type) {
-    case LOAD:
-      return { ...state, tickets: action.payload }
     default:
       return state;
   }
 }
 
-export function selectTicket(id){
+export function addTicket(ticket) {
   return {
-    type: UPDATE_SELECTED,
-    payload: id
+    type: ADD_SUCCESS,
+    payload: ticket
   }
 }

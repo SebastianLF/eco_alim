@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Header, Segment, Button } from 'semantic-ui-react';
+import { Table, Header, Segment, Icon, Button } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import uuid from 'uuid';
@@ -11,7 +11,7 @@ const TicketsList = React.createClass({
     return (
       <div>
           <Header as='h2' attached='top'>
-            # Tickets
+            # Tickets <Button icon="plus" content="Add" primary disabled/>
           </Header>
           <Table singleLine selectable attached>
             <Table.Header>
@@ -61,6 +61,7 @@ const getTicketsInOrder = function (globalState) {
     magasin.chaine = getNomChaine(globalState.chaine, magasin.chaine);
     return { ...ticket, ...{ magasin: magasin } };
   })
+
 }
 
 const mapStateToProps = (state) => {
