@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "faker": "^4.1.0",
-    "react-scripts": "0.9.0"
+    "react-scripts": "0.9.5"
   },
   "dependencies": {
     "fake": "^0.2.2",

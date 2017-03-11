@@ -7,43 +7,21 @@ import uuid from 'uuid';
 var _ = require("lodash");
 import TicketDetails from './TicketDetails';
 
-/*const test = () => (
-  <Accordion.Title>
-    <Icon name='dropdown' />
-    18/06/17 - BIOCOOP ST PRIEST - 49 €
-  </Accordion.Title>
-  <Accordion.Content>
-    <p>No description</p>
-    <Table size='small' compact singleLine selectable>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell>Date</Table.HeaderCell>
-          <Table.HeaderCell>Magasin</Table.HeaderCell>
-          <Table.HeaderCell>Montant</Table.HeaderCell>
-          <Table.HeaderCell></Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-      </Table.Body>
-    </Table>
-  </Accordion.Content>
-)*/
-
 const TicketsList = React.createClass({
 
   formattedList () {
     return this.props.list.map(function (ticket, i) {
         return {
           key: uuid.v1(),
-          title: <Icon name='dropdown' content={ticket.date} />,
-          content: <p>No description</p>
+          title: `${ticket.date} - ${ticket.magasin.chaine} ${ticket.magasin.adresse} - ${ticket.montant} €`,
+          content: <TicketDetails />
         }
       })
   },
 
   render () {
     return (
-      <Accordion panels={ this.formattedList() }></Accordion>
+      <Accordion panels={ this.formattedList() } styled fluid></Accordion>
     )
   }
 })
