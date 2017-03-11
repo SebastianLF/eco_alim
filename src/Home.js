@@ -16,7 +16,6 @@ const Home = React.createClass({
             ECO ALIM
           </Header.Content>
         </Header>
-
         <TicketsBox />
       </div>
     )

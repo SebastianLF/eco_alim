@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Header, Button, Segment, Form, Label, Input, Checkbox } from 'semantic-ui-react'
+import { Header, Card, Button, Segment, Form, Label, Input, Checkbox } from 'semantic-ui-react'
 import TicketsList from '../components/TicketsList'
 import getMonthName from '../helpers/getMonthName'
 import { getChaineNom } from '../redux/modules/magasin'
 var _ = require("lodash");
 
-const BarCompta = () => {
+const BarCompta = (props) => {
   const displayMonth = () => getMonthName(new Date()).toUpperCase();
   const l10nEUR = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" })
   return (
@@ -24,6 +24,23 @@ const BarCompta = () => {
   )
 }
 
+const items = [
+  {
+    header: 'Project Report - April',
+    description: 'Leverage agile frameworks to provide a robust synopsis for high level overviews.',
+    meta: 'ROI: 30%',
+  },
+  {
+    header: 'Project Report - May',
+    description: 'Bring to the table win-win survival strategies to ensure proactive domination.',
+    meta: 'ROI: 34%',
+  }
+]
+
+const CardExampleGroupProps = () => (
+  <Card.Group items={items} />
+)
+
 const TicketsForm = React.createClass({
   render () {
     return (
@@ -33,7 +50,7 @@ const TicketsForm = React.createClass({
             <Form.Input label='Date' name="date" placeholder='01/01/2001' />
             <Form.Select label='Magasin' name="magasin" options={this.props.magasins} placeholder='Selectionnez' />
           </Form.Group>
-          <Form.Button>Ajouter</Form.Button>
+          <Form.Button color='red'>Ajouter un ticket</Form.Button>
         </Form>
       </Segment>
     )
@@ -44,7 +61,7 @@ const TicketsBox = React.createClass({
   render () {
     return (
       <div>
-        <BarCompta />
+        <CardExampleGroupProps />
         <TicketsForm magasins={this.props.magasins}/>
         <TicketsList />
       </div>
@@ -54,6 +71,7 @@ const TicketsBox = React.createClass({
 
 const mapStateToProps = (state) => {
   const magasinsToArray = _.values(state.magasin);
+
   const magasinsFormated = magasinsToArray.map(function (magasin) {
     return { key: magasin.id, text: `${getChaineNom(state.chaine, magasin.chaine)} - ${magasin.adresse}`, value: magasin.id }
   });

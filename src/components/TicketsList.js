@@ -1,44 +1,62 @@
 import React from 'react';
-import { Table, Header, Segment, Icon, Button } from 'semantic-ui-react';
+import faker from 'faker';
+import { Table, Accordion, Header, Segment, Icon, Button } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import uuid from 'uuid';
 var _ = require("lodash");
+import TicketDetails from './TicketDetails';
+
+/*const test = () => (
+  <Accordion.Title>
+    <Icon name='dropdown' />
+    18/06/17 - BIOCOOP ST PRIEST - 49 €
+  </Accordion.Title>
+  <Accordion.Content>
+    <p>No description</p>
+    <Table size='small' compact singleLine selectable>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>Date</Table.HeaderCell>
+          <Table.HeaderCell>Magasin</Table.HeaderCell>
+          <Table.HeaderCell>Montant</Table.HeaderCell>
+          <Table.HeaderCell></Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+      </Table.Body>
+    </Table>
+  </Accordion.Content>
+)*/
 
 const TicketsList = React.createClass({
+
+  formattedList () {
+    return this.props.list.map(function (ticket, i) {
+        return {
+          key: uuid.v1(),
+          title: <Icon name='dropdown' content={ticket.date} />,
+          content: <p>No description</p>
+        }
+      })
+  },
+
+  render () {
+    return (
+      <Accordion panels={ this.formattedList() }></Accordion>
+    )
+  }
+})
+
+const TicketsListWrapper = React.createClass({
 
   render () {
     return (
       <div>
           <Header as='h2' attached='top'>
-            # Tickets <Button icon="plus" content="Add" primary disabled/>
+            # Tickets
           </Header>
-          <Table singleLine selectable attached>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Date</Table.HeaderCell>
-                <Table.HeaderCell>Magasin</Table.HeaderCell>
-                <Table.HeaderCell>Montant</Table.HeaderCell>
-                <Table.HeaderCell></Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              { this.props.list && this.props.list.map(function (ticket, i) {
-                return (
-                  <Table.Row key={ uuid.v1() }>
-                    <Table.Cell>{ticket.date}</Table.Cell>
-                    <Table.Cell>{`${ticket.magasin.chaine} - ${ticket.magasin.adresse}`}</Table.Cell>
-                    <Table.Cell>{ticket.montant}</Table.Cell>
-                    <Table.Cell textAlign='right'>
-                      <Link to={{ pathname: `/tickets/${ticket.id}`, params: { details: ticket } }}>
-                        <Button content='Details' />
-                      </Link>
-                    </Table.Cell>
-                  </Table.Row>
-                )
-              })}
-            </Table.Body>
-          </Table>
+          <TicketsList list={this.props.list}/>
       </div>
     )
   }
@@ -71,4 +89,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps)(TicketsList);
+export default connect(mapStateToProps)(TicketsListWrapper);
