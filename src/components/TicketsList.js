@@ -14,7 +14,7 @@ const TicketsList = React.createClass({
         return {
           key: uuid.v1(),
           title: `${ticket.date} - ${ticket.magasin.chaine} ${ticket.magasin.adresse} - ${ticket.montant} €`,
-          content: <TicketDetails />
+          content: <TicketDetails description={ticket.description} lignes={ ticket.lignes }/>
         }
       })
   },

@@ -5,10 +5,9 @@ import TicketsLigneProduit from './TicketsLigneProduit';
 const TicketDetails = React.createClass({
 
   render () {
-    const ticket = this.props.ticket;
     return (
       <div>
-        <p><strong>Description:</strong> No description.</p>
+        <p><strong>Description: </strong>{ this.props.description }</p>
         <Table size='small' compact selectable singleLine>
           <Table.Header>
             <Table.Row>
@@ -18,9 +17,9 @@ const TicketDetails = React.createClass({
               <Table.HeaderCell>PP</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>
-            <TicketsLigneProduit />
-          </Table.Body>
+
+            <TicketsLigneProduit lignes={ this.props.lignes }/>
+
         </Table>
       </div>
     )

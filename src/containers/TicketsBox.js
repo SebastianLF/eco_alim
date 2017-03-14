@@ -40,7 +40,7 @@ const TicketsForm = React.createClass({
   addProductLine (e) {
     e.preventDefault();
     this.setState({
-      lignes: this.state.lignes.concat([{ key: uuid.v1() }])
+      lignes: this.state.lignes.concat([{ id: uuid.v1(), produit: '1', pu: '5O', qte: '3', pp: '150' }])
     })
   },
 
@@ -48,14 +48,26 @@ const TicketsForm = React.createClass({
     e.preventDefault();
     this.setState({
       lignes: this.state.lignes.filter(function (ligne) {
-        return ligne.key !== key
+        return ligne.id !== key
       })
     })
   },
 
+  onChangeFieldLine (e, id) {
+    console.log(e.target)
+    this.setState({
+      lignes: this.state.lignes.map(function (ligne) {
+        if (ligne.id === id) {
+          console.log("ligne[e.target.name] = e.target.value " + ligne[e.target.name]);
+          return ligne[e.target.name] = e.target.value;
+        }
+      })
+    });
+  },
+
   displayTicketLineProduct () {
     return this.state.lignes && this.state.lignes.map(function (ligne) {
-      return <TicketLigneProduitForm key={ ligne.key } deleteProductLine={ this.deleteProductLine } ligne={ligne}/>
+      return <TicketLigneProduitForm key={ ligne.id } onChangeFieldLine={this.onChangeFieldLine} deleteProductLine={ this.deleteProductLine } ligne={ligne}/>
     }.bind( this ))
   },
 
@@ -65,12 +77,12 @@ const TicketsForm = React.createClass({
     })
   },
 
-  enregistrerTicket () {
+  enregistrerTicket (e) {
+    e.preventDefault();
 
   },
 
   render () {
-    console.log(this.props.magasins);
     return (
       <Segment>
         <Form>
