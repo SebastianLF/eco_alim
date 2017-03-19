@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "babel-jest": "^19.0.0",
+    "enzyme": "^2.7.1",
+    "enzyme-to-json": "^1.5.0",
     "faker": "^4.1.0",
     "jest": "^19.0.2",
+    "jest-enzyme": "^2.1.2",
+    "react-addons-test-utils": "^15.4.2",
     "react-scripts": "0.9.5"
   },
   "dependencies": {
@@ -21,7 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --notify --env=jsdom",
     "eject": "react-scripts eject"
   }
 }

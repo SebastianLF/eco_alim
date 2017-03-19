@@ -14,7 +14,7 @@ const TicketsList = React.createClass({
         return {
           key: uuid.v1(),
           title: `${ticket.date} - ${ticket.magasin.chaine} ${ticket.magasin.adresse} - ${ticket.montant} €`,
-          content: <TicketDetails description={ticket.description} lignes={ ticket.lignes }/>
+          content: <TicketDetails description={ticket.description} lignes={ ticket.lineProduct }/>
         }
       })
   },
@@ -51,7 +51,7 @@ const getNomChaine = function (chaineState, chaineId) {
 
 const getTicketsInOrder = function (globalState) {
 
-  return globalState.tickets.ordre.map(function (ticketId) {
+  return globalState.tickets.orders.map(function (ticketId) {
     const ticket = globalState.tickets.liste[ticketId];
     const magasin = getAdresseMagasin(_.cloneDeep(globalState.magasin), ticket.magasin);
     magasin.chaine = getNomChaine(globalState.chaine, magasin.chaine);
@@ -61,6 +61,7 @@ const getTicketsInOrder = function (globalState) {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     list: getTicketsInOrder(state)
   }

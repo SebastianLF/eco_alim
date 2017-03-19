@@ -9,7 +9,7 @@ const ADD_TICKET_SUCCESS = 'fincas/tickets/ADD_TICKET_SUCCESS';
 const ADD_FAIL = 'fincas/tickets/ADD_FAIL';
 
 const initialState = {
-    ordre: [1, 2, 3],
+    orders: [1, 2, 3],
     liste: {
       '1': {
         id: "1",
@@ -17,24 +17,52 @@ const initialState = {
         magasin: "1",
         montant:"37.23",
         description: 'Une description super.',
-        lignes: [
-          { id: '1', produit: '1', pu: '5O', qte: '3', pp: '150' },
-          { id: '2', produit: '2', pu: '5O', qte: '3', pp: '150' },
-          { id: '3', produit: '3', pu: '5O', qte: '3', pp: '150' }
-        ]
+        lineProduct: {
+          items: {
+            '1': { id: '1', produit: '1', pu: '5O', qte: '3', pp: '150' },
+            '2': { id: '2', produit: '2', pu: '5O', qte: '3', pp: '150' },
+            '3': { id: '3', produit: '3', pu: '5O', qte: '3', pp: '150' }
+          },
+          orders: ['1', '2', '3']
+        }
       },
-      '2': { id: "2", date:"21/01/07", magasin:"2", montant:"14.56", description: '', lignes: [] },
-      '3': { id: "3", date:"08/02/07", magasin:"3", montant:"52.53", description: '', lignes: [] }
+      '2': {
+        id: "2",
+        date:"21/01/07",
+        magasin:"2",
+        montant:"14.56",
+        description: '',
+        lineProduct: {
+          items: {
+            '1': { id: '1', produit: '1', pu: '5O', qte: '3', pp: '150' },
+            '2': { id: '2', produit: '2', pu: '5O', qte: '3', pp: '150' },
+            '3': { id: '3', produit: '3', pu: '5O', qte: '3', pp: '150' }
+          },
+          orders: ['1', '2', '3']
+        }
+      },
+      '3': {
+        id: "3",
+        date:"08/02/07",
+        magasin:"3",
+        montant:"52.53",
+        description: '',
+        lineProduct: {
+          items: {
+            '1': { id: '1', produit: '1', pu: '5O', qte: '3', pp: '150' },
+            '2': { id: '2', produit: '2', pu: '5O', qte: '3', pp: '150' },
+            '3': { id: '3', produit: '3', pu: '5O', qte: '3', pp: '150' }
+          },
+          orders: ['1', '2', '3']
+        }
+      }
     },
 }
 
 export default function tickets(state = initialState, action) {
   switch (action.type) {
     case ADD_TICKET_SUCCESS:
-      const id = uuid.v1();
-      const liste = state.liste;
-      liste[id] = action.ticket;
-      return { ...state, ordre: state.ordre.concat([id]), liste: liste }
+      return { ...state, orders: state.orders.concat([action.payload.id]), liste: { ...state.liste, [action.payload.id]: action.payload } };
     default:
       return state;
   }

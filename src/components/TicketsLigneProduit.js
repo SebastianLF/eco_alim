@@ -6,7 +6,8 @@ const TicketsLigneProduit = React.createClass({
   render () {
       return (
         <Table.Body>
-        {this.props.lignes && this.props.lignes.map(function (ligne) {
+        {this.props.lignes.orders && this.props.lignes.orders.map(function (ligne) {
+          ligne = this.props.lignes.items[ligne];
           return (
             <Table.Row key={ ligne.id }>
               <Table.Cell>{ ligne.produit }</Table.Cell>
@@ -15,7 +16,7 @@ const TicketsLigneProduit = React.createClass({
               <Table.Cell>75 €</Table.Cell>
             </Table.Row>
           )
-        })}
+        }.bind(this))}
         </Table.Body>
       )
     }

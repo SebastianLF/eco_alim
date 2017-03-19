@@ -7,6 +7,7 @@ import TicketLigneProduitForm from '../components/TicketLigneProduitForm';
 import getMonthName from '../helpers/getMonthName'
 import getTimeNow from '../helpers/getTimeNow'
 import { getChaineNom } from '../redux/modules/magasin'
+import { addTicket } from '../redux/modules/tickets'
 var _ = require("lodash");
 
 const BarCompta = (props) => {
@@ -27,38 +28,47 @@ const BarCompta = (props) => {
   )
 }
 
+// handle his own state and props.
 const TicketsForm = React.createClass({
 
   getInitialState () {
     return {
       date: getTimeNow(),
       magasin: '1',
-      lignes: []
+      lignes: {},
+      lignesOrder: []
     }
   },
 
-  addProductLine (e) {
+  addProductLine (e, key) {
     e.preventDefault();
+    const id = uuid.v1();
     this.setState({
-      lignes: this.state.lignes.concat([{ id: uuid.v1(), produit: '1', pu: '5O', qte: '3', pp: '150' }])
-    })
+      lignes: { ...this.state.lignes, [id]: { id, qty: '', unit: '', product: '', pu: '', pp: '' } },
+      lignesOrder: this.state.lignesOrder.concat([id])
+    });
   },
 
   deleteProductLine (e, key) {
     e.preventDefault();
     this.setState({
-      lignes: this.state.lignes.filter(function (ligne) {
+      lignesOrder: this.state.lignesOrder.filter(function (ligne) {
         return ligne.id !== key
       })
     })
   },
 
-  onChangeFieldLine (e, id) {
-    console.log(e.target)
+  editProductLine (id, field, value) {
+    const lineTargetted = { ...this.state.lignes[id], [field]: value };
     this.setState({
-      lignes: this.state.lignes.map(function (ligne) {
+      lignes: { ...this.state.lignes, [id]: lineTargetted },
+    });
+  },
+
+  onChangeFieldLine (e, id) {
+    this.setState({
+      lignesOrder: this.state.lignesOrder.map(function (ligne) {
         if (ligne.id === id) {
-          console.log("ligne[e.target.name] = e.target.value " + ligne[e.target.name]);
           return ligne[e.target.name] = e.target.value;
         }
       })
@@ -66,8 +76,15 @@ const TicketsForm = React.createClass({
   },
 
   displayTicketLineProduct () {
-    return this.state.lignes && this.state.lignes.map(function (ligne) {
-      return <TicketLigneProduitForm key={ ligne.id } onChangeFieldLine={this.onChangeFieldLine} deleteProductLine={ this.deleteProductLine } ligne={ligne}/>
+    return this.state.lignesOrder && this.state.lignesOrder.map(function (ligne) {
+      return <TicketLigneProduitForm
+        key={ ligne }
+        id={ ligne }
+        editProductLine={ this.editProductLine }
+        deleteProductLine={ this.deleteProductLine }
+        products={ this.props.products }
+        units={ this.props.units }
+        />
     }.bind( this ))
   },
 
@@ -77,9 +94,20 @@ const TicketsForm = React.createClass({
     })
   },
 
-  enregistrerTicket (e) {
+  addTicket (e) {
     e.preventDefault();
-
+    const newTicket = {
+      id: uuid.v1(),
+      date: this.state.date,
+      magasin: this.state.magasin,
+      montant: '',
+      description: '',
+      lineProduct: {
+        items: this.state.lignes,
+        orders: this.state.lignesOrder
+      }
+    }
+    this.props.dispatch(addTicket(newTicket));
   },
 
   render () {
@@ -92,7 +120,7 @@ const TicketsForm = React.createClass({
           </Form.Group>
           { this.displayTicketLineProduct() }
           <Form.Button content='Nouvelle ligne' onClick={ this.addProductLine }/>
-          <Form.Button color='green' onClick={ this.enregistrerTicket }>Enregistrer le ticket</Form.Button>
+          <Form.Button color='green' onClick={ this.addTicket }>Enregistrer le ticket</Form.Button>
         </Form>
       </Segment>
     )
@@ -103,7 +131,7 @@ const TicketsBox = React.createClass({
   render () {
     return (
       <div>
-        <TicketsForm magasins={this.props.magasins}/>
+        <TicketsForm units={ this.props.units } magasins={ this.props.magasins } dispatch={this.props.dispatch} products={ this.props.products }/>
         <TicketsList />
       </div>
     )
@@ -112,13 +140,25 @@ const TicketsBox = React.createClass({
 
 const mapStateToProps = (state) => {
   const magasinsToArray = _.values(state.magasin);
+  const unitsToArray = _.values(state.units);
+  const productsToArray = _.values(state.products);
 
   const magasinsFormated = magasinsToArray.map(function (magasin) {
     return { key: magasin.id, text: `${getChaineNom(state.chaine, magasin.chaine)} - ${magasin.adresse}`, value: magasin.id }
   });
 
+  const unitsFormatted = unitsToArray.map(function (unit) {
+    return { key: unit.id, text: `${unit.description}`, value: `${unit.id}` }
+  });
+
+  const productsFormatted = productsToArray.map(function (product) {
+    return { key: product.id, text: `${product.name}`, value: `${product.id}` }
+  });
+
   return {
-    magasins: magasinsFormated
+    magasins: magasinsFormated,
+    units: unitsFormatted,
+    products: productsFormatted
   }
 }
 
