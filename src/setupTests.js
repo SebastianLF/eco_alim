@@ -1,4 +1,4 @@
-// import 'jest-enzyme';
+import 'jest-enzyme';
 // import { shallow, render, mount } from 'enzyme';
 // global.shallow = shallow;
 // global.render = render;

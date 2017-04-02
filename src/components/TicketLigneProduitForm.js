@@ -4,11 +4,8 @@ import { Form, Button } from 'semantic-ui-react'
 const TicketLigneProduitForm = React.createClass({
 
   onChange (e, { value, name }) {
-    console.log(e, value, name);
-
     this.props.editProductLine(this.props.id, name, value);
   },
-
   render () {
     return (
         <Form.Group widths='equal'>

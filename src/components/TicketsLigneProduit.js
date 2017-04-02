@@ -6,14 +6,14 @@ const TicketsLigneProduit = React.createClass({
   render () {
       return (
         <Table.Body>
-        {this.props.lignes.orders && this.props.lignes.orders.map(function (ligne) {
-          ligne = this.props.lignes.items[ligne];
+        {this.props.lineProducts && this.props.lineProducts.map(function (ligne) {
           return (
             <Table.Row key={ ligne.id }>
-              <Table.Cell>{ ligne.produit }</Table.Cell>
+              <Table.Cell>{ ligne.qty }</Table.Cell>
+              <Table.Cell>{ ligne.unit.description }</Table.Cell>
+              <Table.Cell>{ ligne.product.name }</Table.Cell>
               <Table.Cell>{ ligne.pu }</Table.Cell>
-              <Table.Cell>3 kg</Table.Cell>
-              <Table.Cell>75 €</Table.Cell>
+              <Table.Cell>{ ligne.pp }</Table.Cell>
             </Table.Row>
           )
         }.bind(this))}

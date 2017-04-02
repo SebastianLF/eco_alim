@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Header, Card, Button, Segment, Form, Label, Input, Checkbox } from 'semantic-ui-react'
 import uuid from 'uuid'
-import TicketsList from '../components/TicketsList'
+import TicketsListWrapper from '../components/TicketsListWrapper'
 import TicketLigneProduitForm from '../components/TicketLigneProduitForm';
 import getMonthName from '../helpers/getMonthName'
 import getTimeNow from '../helpers/getTimeNow'
@@ -115,7 +115,7 @@ const TicketsForm = React.createClass({
       <Segment>
         <Form>
           <Form.Group widths='equal'>
-            <Form.Input label='Date' name="date" placeholder='01/01/2001' value={ this.state.date } onChange={this.onChangeDate}/>
+            <Form.Input label='Date' name="date" placeholder='01/01/01' value={ this.state.date } onChange={this.onChangeDate}/>
             <Form.Select label='Magasin' name="magasin" options={ this.props.magasins } placeholder='Selectionnez' />
           </Form.Group>
           { this.displayTicketLineProduct() }
@@ -132,7 +132,7 @@ const TicketsBox = React.createClass({
     return (
       <div>
         <TicketsForm units={ this.props.units } magasins={ this.props.magasins } dispatch={this.props.dispatch} products={ this.props.products }/>
-        <TicketsList />
+        <TicketsListWrapper />
       </div>
     )
   }
